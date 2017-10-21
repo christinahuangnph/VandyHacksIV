@@ -1,26 +1,28 @@
+const double CLEAN = 2;
+const double  WAIT = 5;
+const int inPin = 7;
+const int outPin = 8;
+const int buttonPin = 11;
+const int LEDPin = 4;
+
 void setup() {
-  const double CLEAN = 2;
-  const double  WAIT = 5;
-  const int motionPin = 7;
-  const int buttonPin = 11;
-  const int LEDPin = 4;
+  serial.begin(9600);
+  pinMode(inPin, INPUT);
+  pinMode(outPin, OUTPUT);
 
 }
 
 void loop() {
-  // motionPin setup
+  // outPin setup
   long duration, cm;
-  pinMode(motionPin, OUTPUT);
-  digitalWrite(motionPin, LOW);
+  digitalWrite(outPin, LOW);
   delayMicroseconds(CLEAN);
-  digitalWrite(motionPin, HIGH);
+  digitalWrite(outPin, HIGH);
   delayMicroseconds(WAIT);
-  digitalWrite(motionPIn, LOW);
+  digitalWrite(outPIn, LOW);
 
-  // read sensor data
-  pinMode(motionPin, INPUT);
-  
-  duration = pulseIn(motionPin HIGH);
+  // read sensor data 
+  duration = pulseIn(inPin, HIGH);
   cm = msToCm(duration);
   if(cm >= 0 && cm <= 60) {
     digitalWrite(LEDPin, HIGH);
