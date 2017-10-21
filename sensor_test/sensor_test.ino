@@ -1,6 +1,6 @@
 void setup() {
   const double CLEAN = 2;
-  const double  watt = 5;
+  const double  WAIT = 5;
   const int motionPin = 7;
   const int buttonPin = 11;
   const int LEDPin = 4;
