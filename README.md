@@ -1,5 +1,6 @@
 # VandyHacksIV
 Halloween Themed VandyHacks Project
+
 By Christina Huang, Emily Markert, and Emily McClay
 
 10/20/2017 - 10/22/2017
