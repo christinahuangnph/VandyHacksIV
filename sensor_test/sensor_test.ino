@@ -1,12 +1,12 @@
 const double CLEAN = 2;
 const double  WAIT = 5;
-const int inPin = 7;
-const int outPin = 8;
+const int inPin = 7; //echo
+const int outPin = 8; //trigger
 const int buttonPin = 11;
 const int LEDPin = 4;
 
 void setup() {
-  serial.begin(9600);
+  Serial.begin(9600);
   pinMode(inPin, INPUT);
   pinMode(outPin, OUTPUT);
 
@@ -19,7 +19,7 @@ void loop() {
   delayMicroseconds(CLEAN);
   digitalWrite(outPin, HIGH);
   delayMicroseconds(WAIT);
-  digitalWrite(outPIn, LOW);
+  digitalWrite(outPin, LOW);
 
   // read sensor data 
   duration = pulseIn(inPin, HIGH);
