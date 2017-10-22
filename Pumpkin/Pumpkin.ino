@@ -5,12 +5,14 @@ Servo myservo; //create a servo object
 
 const double CLEAN = 2;
 const double  WAIT = 5;
-const double DIST = 5;
+const double DIST = 15;
 const int inPin = 7; //echo
 const int outPin = 8; //trigger
 const int buttonPin = 11;
 const int LEDPin = 4;
 const int servoPin = 12;
+int count = 0;
+int process = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -18,13 +20,15 @@ void setup() {
   pinMode(outPin, OUTPUT);
   // initialize the LEDpin as an output.
   pinMode(LEDPin, OUTPUT);
+  digitalWrite(LEDPin, HIGH); //keeps LEDs on
 
   myservo.attach(servoPin); //attach servo object to pin
+  myservo.write(170);//goes to 15 degrees 
 }
 
 void loop() {
-  // outPin setup
-  long duration, cm;
+  // outPin setup & cleaning
+  long duration, cm = 0;
   digitalWrite(outPin, LOW);
   delayMicroseconds(CLEAN);
   digitalWrite(outPin, HIGH);
@@ -34,32 +38,56 @@ void loop() {
   // read sensor data 
   duration = pulseIn(inPin, HIGH);
   cm = msToCm(duration);
-  if(cm >= DIST && cm <= 60) {
-    digitalWrite(LEDPin, HIGH);
-    delay(100);
-    digitalWrite(LEDPin, LOW);
-    Serial.println("#S|PLAY|[]#");
-    delay(5000);
-  }
 
-  if(cm >= 0 && cm <= DIST) {
-    digitalWrite(LEDPin, HIGH);
-    delay(5000); //keep lit for 10 seconds
-    digitalWrite(LEDPin, LOW);
+  // long distance
+  if((cm >= DIST) && (cm <= 90)) {
+      Serial.print("#S|CANDY|[");
+      Serial.println("]#");
+      digitalWrite(LEDPin, LOW);
+      delay(300);
+      digitalWrite(LEDPin, HIGH);
+      delay(100);
+      Serial.print("#S|SENDK|[");
+      Serial.print(process);
+      Serial.println("&%({F4})]#");
+      ++process;
+  } else if((cm > 2) && (cm < DIST)) { // close distance
+      digitalWrite(LEDPin, LOW);
+      delay(100);
+      digitalWrite(LEDPin, HIGH);
 
-    //trigger motor
-    myservo.write(170);//goes to 15 degrees 
-    delay(3000);//wait for a second
-    myservo.write(130);//goes to 30 degrees 
-    delay(500);//wait for a second.33
+      // trigger motor
+      myservo.write(130);//goes to 15 degrees 
+      delay(500);//wait for 3 seconds
+      myservo.write(170);//goes to 30 degrees 
+      if(count%2 == 0) { // even
+        Serial.print("#S|COCO|[");
+        Serial.println("]#");
+        delay(4000);
+        Serial.print("#S|SENDK|[");
+        Serial.print(process);
+        Serial.println("&%({F4})]#");
+        ++process;
+      } else { // odd
+        Serial.print("#S|LAUGH|[");
+        Serial.println("]#");
+        delay(4000);
+        Serial.print("#S|SENDK|[");
+        Serial.print(process);
+        Serial.println("&%({F4})]#");
+        ++process;
+        
+      }
+      ++count;
+   
   }
   
-  delay(1000); //1 seconds
-
+  delay(8000); //8 seconds
 }
 
+//converts microseconds to distance
 long msToCm(long ms) {
-  return ms / 29 /2;
+  return (ms/29/2);
 }
 
 
