@@ -12,7 +12,6 @@ const int buttonPin = 11;
 const int LEDPin = 4;
 const int servoPin = 12;
 int count = 0;
-int process = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -41,16 +40,11 @@ void loop() {
 
   // long distance
   if((cm >= DIST) && (cm <= 90)) {
-      Serial.print("#S|CANDY|[");
-      Serial.println("]#");
+      Serial.println("#S|CANDY|[]#");
       digitalWrite(LEDPin, LOW);
       delay(300);
       digitalWrite(LEDPin, HIGH);
       delay(100);
-      Serial.print("#S|SENDK|[");
-      Serial.print(process);
-      Serial.println("&%({F4})]#");
-      ++process;
   } else if((cm > 2) && (cm < DIST)) { // close distance
       digitalWrite(LEDPin, LOW);
       delay(100);
@@ -61,21 +55,11 @@ void loop() {
       delay(500);//wait for 3 seconds
       myservo.write(170);//goes to 30 degrees 
       if(count%2 == 0) { // even
-        Serial.print("#S|COCO|[");
-        Serial.println("]#");
+        Serial.println("#S|COCO|[]#");
         delay(4000);
-        Serial.print("#S|SENDK|[");
-        Serial.print(process);
-        Serial.println("&%({F4})]#");
-        ++process;
       } else { // odd
-        Serial.print("#S|LAUGH|[");
-        Serial.println("]#");
+        Serial.println("#S|LAUGH|[]#");
         delay(4000);
-        Serial.print("#S|SENDK|[");
-        Serial.print(process);
-        Serial.println("&%({F4})]#");
-        ++process;
         
       }
       ++count;
